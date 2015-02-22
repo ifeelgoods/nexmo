@@ -23,6 +23,10 @@ module Nexmo
     end
 
     def send_message(params)
+      unless params[:type]
+        params[:type] = unicode?(params[:text]) ? 'unicode' : 'text'
+      end
+
       response = post('/sms/json', params)
 
       item = response['messages'].first
@@ -121,7 +125,12 @@ module Nexmo
     def post(path, params)
       body = URI.encode_www_form(params.merge(:api_key => @key, :api_secret => @secret))
 
-      parse @http.post(path, body, {'Content-Type' => 'application/x-www-form-urlencoded'})
+      content_type = 'application/x-www-form-urlencoded'
+      if params[:text]
+        content_type += '; charset=' + params[:text].encoding.to_s.downcase
+      end
+
+      parse @http.post(path, body, {'Content-Type' => content_type})
     end
 
     def parse(http_response)
@@ -153,6 +162,10 @@ module Nexmo
 
     def escape(component)
       CGI.escape(component.to_s)
+    end
+
+    def unicode?(string)
+      string.chars.any? { |c| c.bytes.count != 1 }
     end
   end
 end
