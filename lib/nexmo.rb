@@ -125,7 +125,12 @@ module Nexmo
     def post(path, params)
       body = URI.encode_www_form(params.merge(:api_key => @key, :api_secret => @secret))
 
-      parse @http.post(path, body, {'Content-Type' => 'application/x-www-form-urlencoded'})
+      content_type = 'application/x-www-form-urlencoded'
+      if params[:text]
+        content_type += '; charset=' + params[:text].encoding.to_s.downcase
+      end
+
+      parse @http.post(path, body, {'Content-Type' => content_type})
     end
 
     def parse(http_response)
