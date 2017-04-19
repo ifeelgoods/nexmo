@@ -33,7 +33,7 @@ module Nexmo
 
       raise Error, "#{item['error-text']} (status=#{status})" unless status.zero?
 
-      return item
+      return response
     end
 
     def get_balance

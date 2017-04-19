@@ -31,7 +31,7 @@ describe 'Nexmo::Client' do
 
       stub_request(:post, "#@base_url/sms/json").with(@form_urlencoded_data).to_return(response_body)
 
-      @client.send_message(@example_message_hash).must_equal({'status' => 0, 'message-id' => 'id'})
+      @client.send_message(@example_message_hash).must_equal({'messages' => [{'status' => 0, 'message-id' => 'id'}]})
     end
 
     describe 'type parameters' do
