@@ -38,6 +38,8 @@ module Nexmo
       else
         raise Error, "#{item['error-text']} (status=#{status})"
       end
+
+      return response
     end
 
     def get_balance
