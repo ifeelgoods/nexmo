@@ -26,7 +26,7 @@ module Nexmo
       false
     end
 
-    def request(path, params: nil, type: Get, &block)
+    def request(path, params: nil, type: Get, charset: 'utf-8', &block)
       uri = URI('https://' + host + path)
 
       unless authorization_header?
@@ -46,6 +46,7 @@ module Nexmo
           message['Content-Type'] = 'application/json'
           message.body = JSON.generate(params)
         else
+          message['Content-Type'] = "application/x-www-form-urlencoded; charset=#{charset}"
           message.form_data = params
         end
       end

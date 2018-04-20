@@ -20,6 +20,8 @@ module Nexmo
       @api_host = options.fetch(:api_host) { 'api.nexmo.com' }
 
       @user_agent = UserAgent.string(options[:app_name], options[:app_version])
+
+      @autodetect_type = options.fetch(:autodetect_type) { false }
     end
 
     def authorization
@@ -46,6 +48,10 @@ module Nexmo
       end
 
       @api_secret
+    end
+
+    def autodetect_type?
+      @autodetect_type
     end
 
     def signature_secret
